@@ -40,13 +40,67 @@ function Calculate() {
   sideLengthInput.setAttribute("name", "sideLengthInput");
   // Create Calculate Button
   let calcBtn = document.createElement("button");
+  calcBtn.innerText = "Calculate!"
+  calcBtn.setAttribute("id", "calcBtn")
+  // Create result Displays
+  let areaResult = document.createElement("b");
+  areaResult.innerText = "?";
+  areaResult.setAttribute("id", "areaResult");
+  let periResult = document.createElement("b");
+  periResult.innerText = "?";
+  periResult.setAttribute("id", "periResult");
 
+  // Create Script Tag
+  let scriptTag = document.createElement("script");
+  scriptTag.setAttribute("type");
+  scriptTag.defer = true;
+
+  // Create script
+  let constructedScript =
+    `
+    // Elements
+    // Input
+    const sideLengthInput = document.getElementById('sideLengthInput');
+    // Calculate Button
+    const calcBtn = document.getElementById('calcBtn');
+    // Result Displays
+    const areaResult = document.getElementById('areaResult');
+    const periResult = document.getElementById('periResult');
+    
+    function Calculate() {
+
+      // Get Input
+      let sideLength = sideLengthInput.value;
+
+      // Calculate Area
+      let area = 2;
+      // Calculate Perimeter
+      let peri = sideLength * ${n};
+
+      // Round answers up to 2 decimal places, if needed
+      if (area % 1 != 0) {
+        area = area.toFixed(2);
+      }
+      if (peri % 1 != 0) {
+        peri = peri.toFixed(2);
+      }
+
+      // Display Result
+      volumeResult.innerHTML = "" + volume + "m<sup>3</sup>";
+      return;
+    }
+    `
 
   // Construct
   mainDiv.appendChild(headerTitle);
   mainDiv.appendChild(inputLabel);
   mainDiv.appendChild(sideLengthInput);
-
+  mainDiv.appendChild(document.createElement("br"));
+  mainDiv.appendChild(calcBtn);
+  mainDiv.appendChild(document.createElement("br"));
+  mainDiv.appendChild(areaResult);
+  mainDiv.appendChild(document.createElement("br"));
+  mainDiv.appendChild(periResult);
   // Display Result
   outputResult.innerHTML = ""
   outputResult.appendChild(mainDiv)
