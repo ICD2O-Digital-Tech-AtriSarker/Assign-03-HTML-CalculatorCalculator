@@ -1,9 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Title</title>
-  </head>
-  <body>
-    <p>Paragraph</p>
-  </body>
+
+<head>
+  <!-- Meta data section -->
+  <meta charset="utf-8">
+  <meta name="description" content="Calculator for Calculator of a n-sided regular polygon, Using Javascript">
+  <meta name="keywords" content="immaculata, icd2o">
+  <meta name="author" content="Atri Sarker">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./fav_index/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./fav_index/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./fav_index/favicon-16x16.png">
+  <link rel="manifest" href="./fav_index/site.webmanifest">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/style.css">
+
+  <!-- Title -->
+  <title>Calculator Calculator in JS</title>
+</head>
+
+<body>
+
+  <!-- Script -->
+  <script defer src="./js/script.js"></script>
+
+  <!-- Header -->
+  <h1>Calculator Calculator in JS</h1>
+
+  <!-- Table For Layout -->
+  <table>
+    <tr>
+      <td>
+        <!-- Amount of Sides Input -->
+        <label for="sidesInput">Amount of sides:</label>
+        <input id="sidesInput" type="number" name="sidesInput" step="1" min="3" />
+        <br>
+      </td>
+      <td>
+        <!-- Image of Shape -->
+        <img class="formulaImg" src="./images/sphereDiagram.PNG" alt="Polygon Diagram">
+        <br>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Calculate Button -->
+  <button id="CalculateBtn">Calculate</button>
+
+  <!-- Result -->
+  <p>Output:</p>
+  <!-- Output Container -->
+  <div id="outputResult">
+    
+  </div>
+
+</body>
+
 </html>
