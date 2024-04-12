@@ -222,7 +222,7 @@ function Calculate() {
   copyHtmlBtn.onclick = function() {
     navigator.clipboard.writeText(htmlCode);
     // Snackbar
-    let data = {message: "Copied!", timeout: 400};
+    let data = { message: "Copied!", timeout: 400 };
     copyNotifier.MaterialSnackbar.showSnackbar(data);
   }
   return;
@@ -231,6 +231,10 @@ function Calculate() {
 // Connect button click to the Calculate() function, 
 calculateBtn.onclick = Calculate;
 
+// Connect Input to Polygon Display
+sidesInput.oninput = function() {
+  drawPolygon(mainCanvas, Number(sidesInput.value));
+}
 //Hide Initial Div and copy button
 outputResult.style.visibility = "hidden"
 copyHtmlBtn.style.visibility = "hidden"
