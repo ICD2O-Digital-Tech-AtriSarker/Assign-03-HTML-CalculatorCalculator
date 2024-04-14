@@ -9,6 +9,12 @@ body {
   background: indianred;
   font-family: 'Oswald', sans-serif;
   color: #470101;
+  padding-bottom: 40px;
+}
+
+h1 img {
+  width: 48px;
+  height: 48px;
 }
 
 #mainCanvas {

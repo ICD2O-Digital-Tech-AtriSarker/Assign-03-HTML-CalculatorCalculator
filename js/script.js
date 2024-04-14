@@ -20,33 +20,6 @@ const copyHtmlBtn = document.getElementById("copyHtmlBtn");
 // Copied text notifier
 const copyNotifier = document.getElementById("copyNotifier");
 
-// Canvas Drawing Function
-function drawPolygon(canvas, n) {
-  // Prevent Lag
-  n = Math.min(314, n)
-  const ctx = canvas.getContext("2d");
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const radius = Math.min(canvas.width, canvas.height) * 0.4
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 12;
-
-  const angle = (Math.PI * 2) / n;
-  // Draw Shape
-  ctx.strokeStyle = "black";
-  ctx.beginPath();
-  ctx.moveTo(centerX + radius, centerY);
-  for (let i = 1; i <= n; i++) {
-    const vertexX = centerX + radius * Math.cos(i * angle);
-    const vertexY = centerY + radius * Math.sin(i * angle);
-    ctx.lineTo(vertexX, vertexY);
-  }
-  ctx.closePath();
-  ctx.stroke();
-}
-
-
 // Code for Calculator Calculator
 function Calculate() {
 
@@ -64,6 +37,10 @@ function Calculate() {
   // Create Header Title
   let headerTitle = document.createElement("h3");
   headerTitle.innerText = `Area+Perimeter of a Regular ${n}-sided Polygon`;
+
+  // Create Form for input validation
+  let formElement = document.createElement("form");
+  formElement.setAttribute("id", "calculateForm");
 
   // Create Table for layout
   let table = document.createElement("table");
@@ -83,6 +60,8 @@ function Calculate() {
   // Create Input element
   let sideLengthInput = document.createElement("input");
   sideLengthInput.setAttribute("type", "number");
+  sideLengthInput.setAttribute("step", "0.001");
+  sideLengthInput.setAttribute("min", "0");
   sideLengthInput.setAttribute("id", "sideLengthInput");
   sideLengthInput.setAttribute("name", "sideLengthInput");
   // Create Canvas
@@ -94,6 +73,7 @@ function Calculate() {
   let calcBtn = document.createElement("button");
   calcBtn.innerText = "Calculate!";
   calcBtn.setAttribute("id", "calcBtn");
+  calcBtn.setAttribute("type", "submit");
   // Create result Displays
   let areaPreMsg = document.createElement("p");
   areaPreMsg.innerText = "The Area is ";
@@ -123,6 +103,8 @@ function Calculate() {
     let lengthInput = document.getElementById("sideLengthInput");
     // Calculate Button
     let calcBtn = document.getElementById("calcBtn");
+    // Calculate Form
+    let calcForm = document.getElementById("calculateForm");
     // Canvas
     let canvas = document.getElementById("polygonDisplay");
     // Result Displays
@@ -153,8 +135,11 @@ function Calculate() {
       return;
     }
 
-    // Connect Button Click to function
-    calcBtn.onclick = Calculate
+    // Connect Button Click to form validation + calculation
+    calcForm.onsubmit = function() {
+      Calculate();
+      return false;
+    }
 
     // Draw Polygon
     // Prevent Lag
@@ -168,7 +153,7 @@ function Calculate() {
     ctx.lineWidth = 4;
 
     let angle = (Math.PI * 2) / sides;
-    // Draw Shape3
+    // Draw Shape
     ctx.strokeStyle = "black";
     ctx.beginPath();
     ctx.moveTo(centerX + radius, centerY);
@@ -193,6 +178,8 @@ function Calculate() {
     ctx.font = "bold 24px serif";
     ctx.fillStyle = "red";
     ctx.fillText("s", centerX + 1.1 * radius * Math.cos(0.5 * angle), centerY + 1.1 * radius * Math.sin(0.5 * angle));
+
+    
     }
 
     main();
@@ -204,8 +191,9 @@ function Calculate() {
   td1.appendChild(inputLabel);
   td1.appendChild(sideLengthInput);
   td2.appendChild(polygonDisplay);
-  mainDiv.appendChild(table);
-  mainDiv.appendChild(calcBtn);
+  formElement.appendChild(table);
+  formElement.appendChild(calcBtn);
+  mainDiv.appendChild(formElement);
   mainDiv.appendChild(document.createElement("br"));
   mainDiv.appendChild(areaPreMsg);
   mainDiv.appendChild(periPreMsg);
@@ -231,10 +219,78 @@ function Calculate() {
 // Connect button click to the Calculate() function, 
 calculateBtn.onclick = Calculate;
 
-// Connect Input to Polygon Display
-sidesInput.oninput = function() {
-  drawPolygon(mainCanvas, Number(sidesInput.value));
+// Canvas Drawing Function
+function drawPolygon(canvas, n) {
+  // Prevent Lag from Big Numbers
+  n = Math.min(314, n)
+
+  let ctx = canvas.getContext("2d");
+  let centerX = canvas.width / 2;
+  let centerY = canvas.height / 2;
+  let radius = Math.min(canvas.width, canvas.height) * 0.4
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 12;
+
+  let angle = (Math.PI * 2) / n;
+  // Draw Shape
+  ctx.strokeStyle = "black";
+  ctx.beginPath();
+  ctx.moveTo(centerX + radius, centerY);
+  for (let i = 1; i <= n; i++) {
+    let vertexX = centerX + radius * Math.cos(i * angle);
+    let vertexY = centerY + radius * Math.sin(i * angle);
+    ctx.lineTo(vertexX, vertexY);
+  }
+  ctx.closePath();
+  ctx.stroke();
 }
+
+function invalidInput(canvas, msg) {
+  let ctx = canvas.getContext("2d");
+  let centerX = canvas.width / 2;
+  let centerY = canvas.height * 0.7;
+  let radius = Math.min(canvas.width, canvas.height) * 0.3
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = `bold 96px serif`;
+  ctx.fillStyle = "red";
+  ctx.textAlign = "center";
+  ctx.fillText("🚫", centerX, centerY);
+
+  ctx.font = `bold 20px serif`;
+  ctx.fillStyle = "red";
+  ctx.textAlign = "center";
+  ctx.fillText(msg, centerX, canvas.height * 0.95);
+}
+
+// Input Validation
+function validateAndDraw() {
+  if (sidesInput.value === "") {
+    calculateBtn.disabled = true;
+  }
+  else if (!RegExp("^[0-9]*$").test(sidesInput.value)) {
+    calculateBtn.disabled = true;
+    invalidInput(mainCanvas, "Input must be a positive Integer!")
+  }
+  else if (Number(sidesInput.value) < 3) {
+    calculateBtn.disabled = true;
+    invalidInput(mainCanvas, "Input has to be bigger than 2!")
+  }
+  else if (Number(sidesInput.value) > 9999999) {
+    calculateBtn.disabled = true;
+    invalidInput(mainCanvas, "Input too big!")
+  }
+  else {
+    calculateBtn.disabled = false;
+    drawPolygon(mainCanvas, Number(sidesInput.value))
+  }
+}
+sidesInput.oninput = validateAndDraw;
+//Initially disable button
+validateAndDraw()
+
 //Hide Initial Div and copy button
 outputResult.style.visibility = "hidden"
 copyHtmlBtn.style.visibility = "hidden"
