@@ -1,5 +1,9 @@
 "use strict";
-// Script for Calculator Calculator
+/*
+* Created by: Atri Sarker
+* Created on: April, 2024
+* Description: This file contains the script.js for the Calculator Calculator, a widget that takes in integer input, n and calculates the html code for the calculator of a regular n-sided polygon.
+*/
 
 // Elements
 const sidesInput = document.getElementById("sidesInput");
@@ -17,7 +21,7 @@ const mainCanvas = document.getElementById("mainCanvas");
 // Copy HTML button
 const copyHtmlBtn = document.getElementById("copyHtmlBtn");
 
-// Copied text notifier
+// Copied text notifier [ Snackbar ]
 const copyNotifier = document.getElementById("copyNotifier");
 
 // Code for Calculator Calculator
@@ -27,8 +31,6 @@ function Calculate() {
   let n = Number(sidesInput.value);
   // Get Unit Type
   let unitType = unitTypeInput.value;
-  // Get Unit Type
-  // In Progress
 
   // Create container for calculator
   let mainDiv = document.createElement("div");
@@ -82,6 +84,7 @@ function Calculate() {
   areaResult.setAttribute("id", "areaResult");
   areaPreMsg.appendChild(areaResult);
 
+  // Create labels/holders for results
   let periPreMsg = document.createElement("p");
   periPreMsg.innerText = "The Perimeter is ";
   let periResult = document.createElement("b");
@@ -110,7 +113,8 @@ function Calculate() {
     // Result Displays
     let areaResult = document.getElementById("areaResult");
     let periResult = document.getElementById("periResult");
-    
+
+    // Calculation function
     function Calculate() {
 
       // Get Input
@@ -142,18 +146,27 @@ function Calculate() {
     }
 
     // Draw Polygon
-    // Prevent Lag
+    // Get amount of sides, maximum of 314 to prevent lag
     sides = Math.min(314, ${n})
+    
+    // Get canvas render/draw element
     let ctx = canvas.getContext("2d");
+    
+    // Get center of shape
     let centerX = canvas.width * 0.45;
     let centerY = canvas.height / 2;
+
+    // Radius, dictates the size of the shape
     let radius = Math.min(canvas.width, canvas.height) * 0.4
 
+    // Clear Canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 4;
 
+    // Get angle to rotate for each point (radians)
     let angle = (Math.PI * 2) / sides;
+    
     // Draw Shape
+    ctx.lineWidth = 4;
     ctx.strokeStyle = "black";
     ctx.beginPath();
     ctx.moveTo(centerX + radius, centerY);
@@ -175,6 +188,7 @@ function Calculate() {
     ctx.closePath();
     ctx.stroke();
 
+    // Draw label for red line
     ctx.font = "bold 24px serif";
     ctx.fillStyle = "red";
     ctx.fillText("s", centerX + 1.1 * radius * Math.cos(0.5 * angle), centerY + 1.1 * radius * Math.sin(0.5 * angle));
@@ -182,10 +196,13 @@ function Calculate() {
     
     }
 
+    // Call the main() function
     main();
     `
 
+  // Insert script into script tag
   scriptTag.text = constructedScript;
+
   // Construct
   mainDiv.appendChild(headerTitle);
   td1.appendChild(inputLabel);
@@ -199,13 +216,16 @@ function Calculate() {
   mainDiv.appendChild(periPreMsg);
   // Script at end, so all elements load first
   mainDiv.appendChild(scriptTag);
+
   // Display Result
   outputResult.innerHTML = "";
   outputResult.appendChild(mainDiv);
-  outputResult.style.visibility = "visible";
-  drawPolygon(mainCanvas, n);
 
+  // Show external output elements
+  outputResult.style.visibility = "visible";
   copyHtmlBtn.style.visibility = "visible";
+
+  // Connect [Copy HTML] button click to copying the html onto clipboard
   let htmlCode = outputResult.innerHTML;
   copyHtmlBtn.onclick = function() {
     navigator.clipboard.writeText(htmlCode);
@@ -221,19 +241,27 @@ calculateBtn.onclick = Calculate;
 
 // Canvas Drawing Function
 function drawPolygon(canvas, n) {
-  // Prevent Lag from Big Numbers
+  // maximum of 314 sides to prevent lag
   n = Math.min(314, n)
 
+  // Get render/draw element
   let ctx = canvas.getContext("2d");
+
+  // Center for shape
   let centerX = canvas.width / 2;
   let centerY = canvas.height / 2;
+
+  // Radius, dictates the size of the shape
   let radius = Math.min(canvas.width, canvas.height) * 0.4
 
+  // Clear Canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 12;
 
+  // Get angle to rotate for each point/vertex (radians)
   let angle = (Math.PI * 2) / n;
+
   // Draw Shape
+  ctx.lineWidth = 12;
   ctx.strokeStyle = "black";
   ctx.beginPath();
   ctx.moveTo(centerX + radius, centerY);
@@ -246,19 +274,26 @@ function drawPolygon(canvas, n) {
   ctx.stroke();
 }
 
+// Function to display message when input is invalid
 function invalidInput(canvas, msg) {
+
+  // Get canvas render/draw element
   let ctx = canvas.getContext("2d");
+
+  // Get center for the emoji/crossout shape
   let centerX = canvas.width / 2;
   let centerY = canvas.height * 0.7;
-  let radius = Math.min(canvas.width, canvas.height) * 0.3
 
+  // Clear Canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Draw crossout emoji
   ctx.font = `bold 96px serif`;
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
   ctx.fillText("🚫", centerX, centerY);
 
+  // Draw red text with the message underneath the crossout
   ctx.font = `bold 20px serif`;
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
@@ -267,30 +302,37 @@ function invalidInput(canvas, msg) {
 
 // Input Validation
 function validateAndDraw() {
+  // Empty Input Check
   if (sidesInput.value === "") {
     calculateBtn.disabled = true;
   }
+  // Positive Integer Check
   else if (!RegExp("^[0-9]*$").test(sidesInput.value)) {
     calculateBtn.disabled = true;
     invalidInput(mainCanvas, "Input must be a positive Integer!")
   }
+  // Greater than 3 Check
   else if (Number(sidesInput.value) < 3) {
     calculateBtn.disabled = true;
     invalidInput(mainCanvas, "Input has to be bigger than 2!")
   }
+  // Input too big Check
   else if (Number(sidesInput.value) > 9999999) {
     calculateBtn.disabled = true;
     invalidInput(mainCanvas, "Input too big!")
   }
+  // Valid input, enable the button and draw shape with input
   else {
     calculateBtn.disabled = false;
     drawPolygon(mainCanvas, Number(sidesInput.value))
   }
 }
+
+// Connect input-change to validation function
 sidesInput.oninput = validateAndDraw;
 //Initially disable button
 validateAndDraw()
 
-//Hide Initial Div and copy button
+//Initially Hide Div and [ Copy HTML ] button
 outputResult.style.visibility = "hidden"
 copyHtmlBtn.style.visibility = "hidden"

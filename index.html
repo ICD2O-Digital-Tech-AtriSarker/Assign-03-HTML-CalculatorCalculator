@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+<!--
+  * Created by: Atri Sarker
+  * Created on: April, 2024
+  * Description: This file contains the index.html for the Calculator Calculator, a widget that takes in integer input, n and calculates the html code for the calculator of a regular n-sided polygon.
+-->
 
 <head>
-  <!-- Meta data section -->
+  <!-- Metadata section -->
   <meta charset="utf-8">
   <meta name="description" content="Calculator for Calculator of a n-sided regular polygon, Using Javascript">
   <meta name="keywords" content="immaculata, icd2o">
@@ -53,7 +58,7 @@
         <br>
       </td>
       <td>
-        <!-- Image of Shape -->
+        <!-- Image of Shape / Canvas for shape/msg -->
         <canvas id="mainCanvas">
         </canvas>
       </td>
@@ -64,21 +69,25 @@
   <button id="CalculateBtn"
     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Calculate</button>
 
-  <!-- Result -->
+  <!-- Result Label -->
   <h5>Output:</h5>
+
   <!-- Output Container -->
   <div id="outputResult">
   </div>
+  <br>
+  <br>
+
   <!-- Copy HTML button -->
-  <br>
-  <br>
   <button id="copyHtmlBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
     Copy HTML! </button>
-  <!-- Snack Bar -->
+
+  <!-- Snack Bar [For Copy HTML button] -->
   <div id="copyNotifier" class="mdl-js-snackbar mdl-snackbar">
     <div class="mdl-snackbar__text">Copied!</div>
     <button class="mdl-snackbar__action" type="button"></button>
   </div>
+
 </body>
 
 </html>
