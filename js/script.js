@@ -181,7 +181,7 @@ function Calculate() {
     ctx.stroke();
 
     // Draw Red Line
-    ctx.strokeStyle = "red";3
+    ctx.strokeStyle = "red";
     ctx.beginPath();
     ctx.moveTo(centerX + radius, centerY);
     ctx.lineTo(centerX + radius * Math.cos(1 * angle), centerY + radius * Math.sin(1 * angle));
